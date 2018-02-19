@@ -51,16 +51,56 @@ class Inpsydedemo{
 	}
 
 	public function initialize(){
-		register_activation_hook( __FILE__, array( 'Inpsydedemo', 'activate' ) );
-		register_deactivation_hook( __FILE__, array( 'Inpsydedemo', 'deactivate' ) );
+		add_action('init', array($this, 'setup'));
+	}
+
+	public function setup(){
+		register_activation_hook( __FILE__, array( $this, 'activate' ) );
+		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
+		add_shortcode('inpsyde_form', array($this,'inpsyde_form'));
+
+		$this->register_inpsyde_post_type();
+	}
+
+	public function inpsyde_form(){
+	}
+
+	private function register_inpsyde_post_type(){
+		$labels = array(
+			"name" => _x("Inpsydes","Inpsyde"),
+			"singular_name" => _x("Inpsyde","Inpsyde"),
+			"add_new" => _x("Add Inpsyde","Inpsyde"),
+			"add_new_item" => _x("Add New Inpsyde","Inpsyde"),
+			"edit_item" => _x("Edit Inpsyde","Inpsyde"),
+			"new_item" => _x("New Inpsyde","Inpsyde"),
+			"view_item" => _x("View Inpsyde","Inpsyde"),
+			"search_item" => _x("Search Inpsyde","Inpsyde"),
+			"not_found" => _x("Not found","Inpsyde"),
+			"not_found_in_trash" => _x("Not found in trash","Inpsyde"),
+			"menu_name" => _x("Inpsyde","Inpsyde"),
+		);
+
+		$args = array(
+			"labels" => $labels,
+			"supports" => array("title","editor","custom-fields"),
+			"taxonomies" => array('category','post_tag'),
+			"public" => true,
+			"show_ui" => true,
+			"show_in_menu" => true,
+			"show_in_nav_menus" => true,
+			"publicly_queryable" => true,
+			"has_archive" => true,
+			"query_var" => true,
+			"rewrite" => array("slug"=>"Inpsyde"),
+			"capability_type" => "post"
+		);
+
+		register_post_type("Inpsyde", $args);
 	}
 
 	public function activate(){
-		$args = array(
-	      'public' => true,
-	      'label'  => 'inpsyde'
-	    );
-		register_post_type( 'inpsyde', $args );
+
+		flush_rewrite_rules();
 	}
 
 	public function deactivate(){
@@ -69,12 +109,7 @@ class Inpsydedemo{
 
 }
 
-
 if(class_exists('Inpsydedemo')){
-
-	
-
-
 	$inpsydedemo = Inpsydedemo::getInstance();
 	$inpsydedemo->setDependency('db', $wpdb);
 	$inpsydedemo->initialize();
