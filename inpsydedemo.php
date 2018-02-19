@@ -58,11 +58,31 @@ class Inpsydedemo{
 		register_activation_hook( __FILE__, array( $this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 		add_shortcode('inpsyde_form', array($this,'inpsyde_form'));
-
+		add_action('admin_post_inpsyde_form_action', array($this, 'inpsyde_form_action_do'));
+		add_action('admin_post_nopriv_inpsyde_form_action', array($this, 'inpsyde_form_action_do'));
 		$this->register_inpsyde_post_type();
 	}
 
+	public function inpsyde_form_action_do(){
+		if(isset($_POST['inpsyde_form_nonce']) AND wp_verify_nonce( $_POST['inpsyde_form_nonce'], 'inpsyde_form_nonce')){
+			echo('it');
+		}
+	}
+
+	private function render($file,&$data){
+		ob_start();
+		include_once(__DIR__.$file);
+		$template_html = ob_get_contents();
+		ob_end_clean();
+		return $template_html;
+	}
+
 	public function inpsyde_form(){
+		$data = array();
+		$data['inpsyde_form_nonce'] = wp_create_nonce( 'inpsyde_form_nonce' );
+		$data['inpsyde_form_action'] = 'inpsyde_form_action';
+
+		return $this->render('/templates/form.php',$data);
 	}
 
 	private function register_inpsyde_post_type(){
