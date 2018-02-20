@@ -26,15 +26,9 @@ class InpsydeTest extends WP_UnitTestCase {
 	function test_nonce_with_form(){
 		$inpsydedemo = Inpsydedemo::getInstance();	
 
-		$reflection = new \ReflectionClass('Inpsydedemo');
-		$method = $reflection->getMethod('get_wp_nonce');
-		$method->setAccessible(true);
-		
-		$nonce = $method->invokeArgs($inpsydedemo, array('inpsyde_form_nonce'));
-
-		$this->assertNotEmpty($nonce);
-
 		$form = $inpsydedemo->inpsyde_form();
-		$this->assertContains($nonce,$form);
+		$this->assertNotContains('<input type="hidden" name="inpsyde_form_nonce" value=""/>',$form);
+
+		$this->assertNotRegExp('input\stype\=\"hidden\"\sname\=\"inpsyde_form_nonce\"\svalue\=\"(.*)\"\/','');
 	}
 }
