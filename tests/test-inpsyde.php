@@ -29,6 +29,6 @@ class InpsydeTest extends WP_UnitTestCase {
 		$form = $inpsydedemo->inpsyde_form();
 		$this->assertNotContains('<input type="hidden" name="inpsyde_form_nonce" value=""/>',$form);
 
-		$this->assertRegExp('input\stype\=\"hidden\"\sname\=\"inpsyde_form_nonce\"\svalue\=\"([a-zA-Z]{5,})\"\/',$form);
+		$this->assertRegExp('/input\stype\=\"hidden\"\sname\=\"inpsyde_form_nonce\"\svalue\=\"([a-zA-Z]{5,})\"\//',$form);
 	}
 }
