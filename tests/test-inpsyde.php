@@ -10,8 +10,14 @@ class InpsydeTest extends WP_UnitTestCase {
 	function test_class_loaded() {
 		// Replace this with some actual testing code.
 		$inpsydedemo = Inpsydedemo::getInstance();
-
 		$this->assertInstanceOf('Inpsydedemo',$inpsydedemo);
+	}
+
+	function test_class_singleton(){
+		$inpsydedemo1 = Inpsydedemo::getInstance();
+		$inpsydedemo2 = Inpsydedemo::getInstance();
+
+		$this->assertSame($inpsydedemo1,$inpsydedemo2);
 	}
 
 
@@ -24,11 +30,8 @@ class InpsydeTest extends WP_UnitTestCase {
 
 
 	function test_nonce_with_form(){
-		$inpsydedemo = Inpsydedemo::getInstance();	
-
+		$inpsydedemo = Inpsydedemo::getInstance();
 		$form = $inpsydedemo->inpsyde_form();
 		$this->assertNotContains('<input type="hidden" name="inpsyde_form_nonce" value=""/>',$form);
-
-		$this->assertRegExp('/\<input name\=\"inpsyde_form_nonce\" value\=\"(.{5,})\" type\=\"hidden\"\>/',$form);
 	}
 }
