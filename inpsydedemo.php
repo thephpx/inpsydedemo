@@ -9,10 +9,6 @@ require_once dirname(__FILE__) . '/vendor/autoload.php';
 
 global $wpdb;
 
-use App\Utility;
-use App\Validation;
-use App\Form;
-
 class Inpsydedemo{
 
 	private static $instance;
@@ -77,9 +73,13 @@ class Inpsydedemo{
 		return $template_html;
 	}
 
+	private function get_wp_nonce($name=""){
+		return wp_create_nonce($name);
+	}
+
 	public function inpsyde_form(){
 		$data = array();
-		$data['inpsyde_form_nonce'] = wp_create_nonce( 'inpsyde_form_nonce' );
+		$data['inpsyde_form_nonce'] = $this->get_wp_nonce('inpsyde_form_nonce');
 		$data['inpsyde_form_action'] = 'inpsyde_form_action';
 
 		return $this->render('/templates/form.php',$data);
