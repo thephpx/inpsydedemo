@@ -1,0 +1,18 @@
+{
+    "name": "thephpx/insydedemo",
+    "description": "Demo plugin for insyde",
+    "type": "wordpress-plugin",
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "Faisal Ahmed",
+            "email": "thephpx@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload":{
+        "psr-4":{
+            "App\\":"lib/" 
+        }
+    }
+}
