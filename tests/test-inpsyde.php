@@ -13,4 +13,12 @@ class InpsydeTest extends WP_UnitTestCase {
 
 		$this->assertInstanceOf('Inpsydedemo',$inpsydedemo);
 	}
+
+
+	function test_form(){
+		$inpsydedemo = Inpsydedemo::getInstance();	
+		$form = $inpsydedemo->inpsyde_form();
+
+		$this->assertContains('</form>',$form);
+	}
 }
